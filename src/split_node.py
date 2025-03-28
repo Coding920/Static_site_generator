@@ -22,10 +22,12 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type) -> list[TextNode]:
 
     return new_nodes
 
-def extract_md_images(text) -> list[tuple]:
-    image_info = re.findall(r"!\[(.*?)\]\((.*?)\)", text)
-    return image_info
+def configure_extracter(regex):
+    def extracter(text) -> list[tuple]:
+        extracted_info = re.findall(regex, text)
+        return extracted_info
+    return extracter
 
-def extract_md_links(text) -> list[tuple]:
-    link_info = re.findall(r"\[(.*?)\]\((.*?)\)", text)
-    return link_info
+extract_md_images = configure_extracter(r"!\[(.*?)\]\((.*?)\)")
+extract_md_links = configure_extracter(r"\[(.*?)\]\((.*?)\)")
+
