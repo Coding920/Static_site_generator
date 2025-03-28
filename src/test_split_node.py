@@ -1,5 +1,5 @@
 from unittest import TestCase
-from split_node import split_nodes_delimiter
+from split_node import split_nodes_delimiter, extract_md_images, extract_md_links
 from textnode import TextNode, TextType
 
 class split_node_test(TestCase):
@@ -43,3 +43,62 @@ class split_node_test(TestCase):
         "[TextNode(This is a normal block of text, normal, None)]"
         )
         
+    # Test Extract Markdown Image func
+    def test_extract_md_images(self):
+        text = "![alt text](url text) ![second alt text](second url text)"
+        image_info = extract_md_images(text)
+        self.assertEqual(
+                image_info,
+            [('alt text', 'url text'), ('second alt text', 'second url text')]
+               )
+
+        text = "![alt text](url text) [second alt text](second url text)"
+        image_info = extract_md_images(text)
+        self.assertEqual(
+                image_info,
+            [('alt text', 'url text')]
+               )
+
+        text = "![alt text](url text) !![second alt text](second url text)"
+        image_info = extract_md_images(text)
+        self.assertEqual(
+                image_info,
+            [('alt text', 'url text'), ('second alt text', 'second url text')]
+               )
+
+        text = "![alt text](url text) !![second alt text](second url text)"
+        image_info = extract_md_images(text)
+        self.assertEqual(
+                image_info,
+            [('alt text', 'url text'), ('second alt text', 'second url text')]
+               )
+
+        text = "[alt text](url text) !second alt text](second url text)"
+        image_info = extract_md_images(text)
+        self.assertEqual(
+                image_info,
+                []
+               )
+
+    # Test Extract Markdown Link func
+    def test_extract_md_links(self):
+        text = "[anchor text](url text) [second anchor text](second url text)"
+        link_info = extract_md_links(text)
+        self.assertEqual(
+                link_info,
+            [('anchor text', 'url text'), ('second anchor text', 'second url text')]
+               )
+
+        text = "[anchor text](url text) (second anchor text](second url text)"
+        link_info = extract_md_links(text)
+        self.assertEqual(
+                link_info,
+            [('anchor text', 'url text')]
+               )
+
+        text = "![anchor text](url text) !![second anchor text](second url text)"
+        link_info = extract_md_links(text)
+        self.assertEqual(
+                link_info,
+            [('anchor text', 'url text'), ('second anchor text', 'second url text')]
+               )
