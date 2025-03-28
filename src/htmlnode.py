@@ -1,5 +1,4 @@
 
-
 class HTMLNode:
     def __init__(self, tag=None, value=None, children=None, props=None):
         self.tag = tag
@@ -24,7 +23,7 @@ class HTMLNode:
 
 
 class LeafNode(HTMLNode):
-    def __init__(self, tag=None, value=None, props=None):
+    def __init__(self, tag=None, value=None, props=None): # No children
         if value == None:
             raise ValueError("Leaf nodes must have value")
         super().__init__(tag=tag, value=value, props=props)
@@ -34,7 +33,7 @@ class LeafNode(HTMLNode):
 
 
 class ParentNode(HTMLNode):
-    def __init__(self, tag=None, children=[], props=None):
+    def __init__(self, tag=None, children=[], props=None): # No text values
         if tag == None:
             raise ValueError("Parent Node must have tag")
         if children == []:
