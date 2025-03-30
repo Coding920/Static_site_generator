@@ -196,3 +196,13 @@ class split_node_test(TestCase):
             [TextNode(text="alt text", text_type=TextType.Link, url="url"), TextNode(text=" this is an image link at the beginning ", text_type=TextType.Normal)]
             )
 
+        node = TextNode(text="[alt text](url) this is an image link at the beginning [second alt](second url) and in the middle", text_type=TextType.Normal)
+        new_nodes = split_nodes_links([node])
+        self.assertEqual(
+                new_nodes,
+            [TextNode(text="alt text", text_type=TextType.Link, url="url"), 
+             TextNode(text=" this is an image link at the beginning ", text_type=TextType.Normal),
+             TextNode(text="second alt", text_type=TextType.Link, url="second url"),
+             TextNode(text=" and in the middle", text_type=TextType.Normal)]
+            )
+

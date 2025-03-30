@@ -40,29 +40,24 @@ def split_nodes_configurer(function, text_type):
             if function(node.text) == []:
                 new_nodes.append(node)
                 continue
-            
-            # Split text on info
-            image_info = function(node.text)
-            for pair in image_info:
-                sections = node.text.split(f"{"!" if text_type == TextType.Image else ""}[{pair[0]}]({pair[1]})", 1)
-                sections = list(filter(lambda item: item if not item.isspace() else "", sections))
-                sections = list(filter(lambda item: item, sections))
-                if len(sections) == 1 and sections[0].startswith(" "):
-                    new_nodes.extend(
-                            [TextNode(text=pair[0], text_type=text_type, url=pair[1]),
-                             TextNode(text=sections[0], text_type=TextType.Normal)])
-                elif len(sections) < 2 and sections[0].endswith(" "):
-                    new_nodes.extend([
-                        TextNode(text=sections[0], text_type=TextType.Normal),
-                        TextNode(text=pair[0], text_type=text_type, url=pair[1])])
-                else:
-                    new_nodes.extend([
-                        TextNode(text=sections[0], text_type=TextType.Normal),
-                        TextNode(text=pair[0], text_type=text_type, url=pair[1]),
-                        TextNode(text=sections[1], text_type=TextType.Normal)])
+
+            link_info = function(node.text)
+            current_link = link_info[0]
+            split_text = node.text.split(f"{"!" if text_type == TextType.Image else ""}[{current_link[0]}]({current_link[1]})")
+
+            if split_text[0].strip():
+                new_nodes.append(TextNode(text=split_text[0], text_type=TextType.Normal))
+
+            new_nodes.append(TextNode(text=current_link[0], text_type=text_type, url=current_link[1]))
+
+            if len(split_text) > 1 and split_text[1]:
+                remaining_nodes = split_nodes([TextNode(text=split_text[1], text_type=TextType.Normal)])
+                new_nodes.extend(remaining_nodes)
 
         return new_nodes
+
     return split_nodes
 
 split_nodes_images = split_nodes_configurer(extract_md_images, TextType.Image)
 split_nodes_links = split_nodes_configurer(extract_md_links, TextType.Link)
+
