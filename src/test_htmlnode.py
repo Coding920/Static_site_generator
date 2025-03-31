@@ -86,7 +86,7 @@ class TestHTMLNode(unittest.TestCase):
             "<div><h1>header</h1><p>paragraph</p></div>"
         )
 
-    def test_parent_with_children(self):
+    def test_parent_with_grandchildren(self):
         child_header = LeafNode(tag="h1", value="header")
         child_para = LeafNode(tag="p", value="paragraph")
         parent_div = ParentNode(tag="div", children=[child_header, child_para])
