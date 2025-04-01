@@ -29,6 +29,8 @@ class LeafNode(HTMLNode):
         super().__init__(tag=tag, value=value, props=props)
 
     def to_html(self):
+        if self.tag == None:
+            return f"{self.value}"
         return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
 
 
@@ -41,6 +43,7 @@ class ParentNode(HTMLNode):
         super().__init__(tag=tag, children=children, props=props)
 
     def to_html(self):
-        return f"<{self.tag}{self.props_to_html()}>{"".join(list(map(lambda item: item.to_html(), self.children)))}</{self.tag}>"
+        value = "".join(list(map(lambda item: item.to_html(), self.children)))
+        return f"<{self.tag}{self.props_to_html()}>{value}</{self.tag}>"
 
 

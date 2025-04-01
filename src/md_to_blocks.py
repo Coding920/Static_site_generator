@@ -9,10 +9,14 @@ def md_to_blocks(text) -> list[str]:
     for block in blocks:
         if not block.strip("\n").strip():
             continue
+        if block == None:
+            print(block)
 
         lines = []
         for line in block.split("\n"):
             line = line.strip()
+            if line == None:
+                print(line)
             lines.append(line)
 
         new_block = "\n".join(lines)

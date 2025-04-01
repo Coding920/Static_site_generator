@@ -15,6 +15,9 @@ def text_node_to_html_node(text_node: TextNode):
         case TextType.Italic:
             return italic_to_leafnode(text_node.text)
 
+        case TextType.Code:
+            return code_to_leafnode(text_node.text)
+
         case TextType.Link:
             return link_to_leafnode(text_node.text, text_node.url)
 
@@ -30,6 +33,7 @@ def configure_tag(tag=None):
 normal_to_leafnode = configure_tag()
 bold_to_leafnode = configure_tag("b")
 italic_to_leafnode = configure_tag("i")
+code_to_leafnode = configure_tag("code")
 
 def link_to_leafnode(value, link):
     return LeafNode(tag="a", value=value, props={"href": link})
