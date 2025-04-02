@@ -50,7 +50,7 @@ def quote_block_to_html(block):
     return ParentNode(tag="blockquote", children=text_to_children(new_block))
 
 def code_block_to_html(block):
-    block = block.lstrip("```").rstrip("```")
+    block = block.lstrip("```\n").rstrip("```")
     code_parent_node = ParentNode(tag="code", children=[LeafNode(value=block)])
     return ParentNode(tag="pre", children=[code_parent_node])
 
