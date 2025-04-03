@@ -33,3 +33,18 @@ def generate_page(src, template_path, dest):
         f.write(final_html)
     return
 
+def generate_pages_recursively(src_dir, dest_dir):
+    if not os.path.exists(src_dir):
+        raise Exception("Source or destination directory doesn't exist")
+
+    files = os.listdir(src_dir)
+    for file in files:
+        cur_file_path = f"{src_dir}/{file}"
+        if os.path.isfile(cur_file_path) and file.endswith(".md"):
+            html_file = f"{file.rstrip("md")}html"
+            generate_page(cur_file_path, "template.html", f"{dest_dir}/{html_file}")
+        else:
+            os.mkdir(f"{dest_dir}/{file}")
+            generate_pages_recursively(cur_file_path, f"{dest_dir}/{file}")
+
+    return

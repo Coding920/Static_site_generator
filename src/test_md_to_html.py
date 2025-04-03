@@ -92,4 +92,17 @@ class test_md_to_html(unittest.TestCase):
         self.assertEqual(
             html,
             "<div><ul><li>this is</li><li>an unordered</li><li>list block</li></ul></div>",
-        )
+            )
+
+    def test_specific_bolding_issue(self):
+        print("CURRENT WORKING TEST")
+        md = "This series, a cornerstone of what I, in my many years as an **Archmage**, have come to recognize as the pinnacle of imaginative creation, stands unrivaled in its depth, complexity, and the sheer scope of its _legendarium_. As we embark on this exploration, let us delve into the reasons why this monumental work is celebrated as the finest in the world."
+        html = md_to_htmlnode(md)
+        print(html)
+        self.assertEqual(
+                html.to_html(),
+            "<div><p>This series, a cornerstone of what I, in my many years as <b>Archmage</b>, have come to recognize as the pinnacle of imaginative creation, stands unrivaled in its depth, complexity, and the sheer scope of its <i>legendarium</i>. As we embark on this exploration, let us delve into the reasons why this monumental work is celebrated as the finest in the world.</p></div>"
+            )
+
+    if __name__ == "__main__":
+        unittest.main()

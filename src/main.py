@@ -1,6 +1,6 @@
 import os
 import shutil
-from html_page_helpers import generate_page
+from html_page_helpers import generate_pages_recursively
 
 def main():
     if not os.path.exists("./public"):
@@ -15,7 +15,7 @@ def main():
     if not os.path.exists("./static"):
         raise ValueError("static dir missing")
     copy_files("./static", "./public")
-    generate_page("./src/content/index.md", "template.html", "./public/index.html")
+    generate_pages_recursively("./content", "./public")
 
     return
 
