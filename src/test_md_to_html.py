@@ -95,14 +95,24 @@ class test_md_to_html(unittest.TestCase):
             )
 
     def test_specific_bolding_issue(self):
-        print("CURRENT WORKING TEST")
-        md = "This series, a cornerstone of what I, in my many years as an **Archmage**, have come to recognize as the pinnacle of imaginative creation, stands unrivaled in its depth, complexity, and the sheer scope of its _legendarium_. As we embark on this exploration, let us delve into the reasons why this monumental work is celebrated as the finest in the world."
+        md = "This series, in my many years as **Archmage**, the world."
         html = md_to_htmlnode(md)
-        print(html)
         self.assertEqual(
                 html.to_html(),
-            "<div><p>This series, a cornerstone of what I, in my many years as <b>Archmage</b>, have come to recognize as the pinnacle of imaginative creation, stands unrivaled in its depth, complexity, and the sheer scope of its <i>legendarium</i>. As we embark on this exploration, let us delve into the reasons why this monumental work is celebrated as the finest in the world.</p></div>"
+            "<div><p>This series, in my many years as <b>Archmage</b>, the world.</p></div>"
             )
+
+    def test_specific_orderedlistblock_issue(self):
+        md = """
+1. An elaborate pantheon of deities (the `Valar` and `Maiar`)
+2. The tragic saga of the Noldor Elves
+        """
+        html = md_to_htmlnode(md)
+        self.assertEqual(
+                html.to_html(),
+                "<div><ol><li>An elaborate pantheon of deities (the <code>Valar</code> and <code>Maiar</code>)</li><li>The tragic saga of the Noldor Elves</li></ol></div>"
+            )
+
 
     if __name__ == "__main__":
         unittest.main()

@@ -17,7 +17,10 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type) -> list[TextNode]:
         for split in node_splits:
             if not split:
                 continue    
-            if split.startswith(" ") or split.endswith(" "):
+            if (split.startswith(" ") or split.endswith(" ")
+            or split.startswith(".") or split.startswith(",")
+            or split.startswith(":") or split.startswith(";")
+            or split.startswith(")")):
                 new_nodes.append(TextNode(text=split, text_type=TextType.Normal))
             else:
                 new_nodes.append(TextNode(text=split, text_type=text_type))
@@ -60,4 +63,29 @@ def split_nodes_configurer(function, text_type):
 
 split_nodes_images = split_nodes_configurer(extract_md_images, TextType.Image)
 split_nodes_links = split_nodes_configurer(extract_md_links, TextType.Link)
+
+# Recursive version Wip
+# ef split_nodes_delimiter(old_nodes, delimiter, text_type) -> list[TextNode]:
+#    new_nodes = []
+
+#    for node in old_nodes:
+#        if delimiter not in node.text or node.text_type != TextType.Normal:
+#            new_nodes.append(node)
+#            continue
+
+#        if node.text.count(delimiter) % 2 != 0:
+#            raise Exception(f"invalid markdown syntax, missing closing {delimiter}")
+
+#        split_text = node.text.split(delimiter)
+#        for section in split_text:
+#            print(section)
+#            if not section[0]:
+#                new_nodes.append(TextNode(text=section[1], text_type=text_type))
+#                new_nodes.extend(split_nodes_delimiter([TextNode(text=section[3], text_type=TextType.Normal)], delimiter, text_type))
+#            elif section[0]:
+#                new_nodes.append(TextNode(text=section[0], text_type=TextType.Normal))
+#                new_nodes.append(TextNode(text=section[1], text_type=text_type))
+#                new_nodes.extend(split_nodes_delimiter([TextNode(text=section[2], text_type=TextType.Normal)], delimiter, text_type))
+
+#    return new_nodes
 

@@ -57,17 +57,12 @@ def code_block_to_html(block):
 def list_to_html_configure(tag):
     def list_block_to_html(block):
         lines = block.splitlines()
-        line_items_nodes = []
+        children = []
         for line in lines:
             line = line.lstrip("0123456789.- ")
-            line_items_nodes.extend(text_to_textnodes(line))
-            
-        list_items = []
-        for item_node in line_items_nodes:
-            list_item = ParentNode(tag="li", children=[text_node_to_html_node(item_node)])
-            list_items.append(list_item)
+            children.append(ParentNode(tag="li", children=text_to_children(line)))
 
-        ol_html = ParentNode(tag=tag, children=list_items)
+        ol_html = ParentNode(tag=tag, children=children)
         return ol_html
     return list_block_to_html
 
